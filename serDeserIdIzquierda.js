@@ -22,22 +22,14 @@ function init(){
     var a = document.createElement("a");
     var texto = document.createTextNode("Descargar JSON");
     a.appendChild(texto);
-    a.setAttribute("id","enlace");
     a.href = "data:application/octet-stream;charset=utf-8," + encodeURIComponent(JSON.stringify(frutas));
     factura.appendChild(a);
-    var enlace = document.getElementById("enlace");
-
-    enlace.addEventListener("click",descargaArchivo);
-
-    function descargaArchivo()
-    {
-        var archivo = new Blob(frutas,{type: "application/octet-stream"});
-        var reader = new FileReader();
-        a.target = "_blank";
-        a.download = "frutas.json";
-        (window.URL || window.webkitURL).revokeObjectURL(a.href);
-        reader.readAsDataURL(archivo);
-    }
+    var archivo = new Blob(frutas,{type: "application/octet-stream"});
+    var reader = new FileReader();
+    a.target = "_blank";
+    a.download = "frutas.json";
+    (window.URL || window.webkitURL).revokeObjectURL(a.href);
+    reader.readAsDataURL(archivo);
 
     //Deserializar sin ajax
     var textoJSON = JSON.parse(JSON.stringify(frutas));
