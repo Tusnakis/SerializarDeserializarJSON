@@ -43,25 +43,27 @@ function init(){
 
     izquierda.innerHTML = htmlCreado;
 
-    //Deserializar con ajax
-    var stringJSONdeFrutasSerializado = "";
+    //Deserializa con ajax
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            stringJSONdeFrutasSerializado =
-                this.responseText;
-        }
-    };
-    //Guardar el fichero frutas.json en la misma carpeta que este script
-    xhttp.open("GET", "frutas.json", true);
+    xhttp.open('GET','frutas.json');
+    xhttp.responseType = 'json';
     xhttp.send();
-
-    textoJSON = JSON.parse(JSON.stringify(stringJSONdeFrutasSerializado));
-    for(var i = 0; i < textoJSON.length; i++)
-    {
-        htmlCreado += "<div id='" + textoJSON[i].ref +"' class='fpeque'><img src='" + textoJSON[i].src + "' class='peque'><div><p>ref: <span>" + textoJSON[i].ref +"</span></p><p>precio: <span>" + textoJSON[i].precio + "</span>€ Kg</p></div></div>";
+    
+    xhttp.onload = function(){
+        var jsonFrutasSerializado = xhttp.response;
+        deserializarJson(jsonFrutasSerializado);
     }
+    //Guardar el fichero frutas.json en la misma carpeta que este script
+    
+    function deserializarJson(strJsonFrutasSer)
+    {
+        var textoJSON = JSON.parse(JSON.stringify(strJsonFrutasSer));
+        for(var i = 0; i < textoJSON.length; i++)
+        {
+            htmlCreado += "<div id='" + textoJSON[i].ref +"' class='fpeque'><img src='" + textoJSON[i].src + "' class='peque'><div><p>ref: <span>" + textoJSON[i].ref +"</span></p><p>precio: <span>" + textoJSON[i].precio + "</span>€ Kg</p></div></div>";
+        }
 
-    izquierda.innerHTML = htmlCreado;
+        izquierda.innerHTML = htmlCreado;
+    }
 
 }
